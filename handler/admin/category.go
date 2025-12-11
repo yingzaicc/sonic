@@ -2,6 +2,7 @@ package admin
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -104,7 +105,7 @@ func (c *CategoryHandler) UpdateCategory(ctx *gin.Context) (interface{}, error) 
 	categoryParam.ID = categoryID
 	if categoryParam.ID == categoryParam.ParentID || categoryParam.ID < 0 {
 		return nil, xerr.WithStatus(err, xerr.StatusBadRequest).
-			WithErrMsgf("categoryID=%d, parentID=%d", categoryParam.ID, categoryParam.ParentID)
+			WithMsg(fmt.Sprintf("categoryID=%d, parentID=%d", categoryParam.ID, categoryParam.ParentID))
 	}
 	category, err := c.CategoryService.Update(ctx, &categoryParam)
 	if err != nil {
